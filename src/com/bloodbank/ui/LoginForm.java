@@ -37,6 +37,7 @@ public class LoginForm extends JFrame {
         });
     }
 
+    // --- UPDATED LOGIN LOGIC ---
     private void handleLogin() {
         String user = usernameField.getText();
         String pass = new String(passwordField.getPassword());
@@ -46,9 +47,18 @@ public class LoginForm extends JFrame {
             return;
         }
 
+        // --- Admin Login Check ---
+        if (user.equals("admin") && pass.equals("admin")) {
+            showMsg("Admin Login Successful!", "Welcome Admin");
+            new AdminDashboard().setVisible(true); // Open Admin Dashboard
+            dispose();
+            return; // Stop further execution
+        }
+
+        // --- Regular User Login Check ---
         if (userDAO.validateLogin(user, pass)) {
             showMsg("Login Successful!", "Welcome");
-            new MainDashboard(user).setVisible(true);
+            new MainDashboard(user).setVisible(true); // Open User Dashboard
             dispose();
         } else {
             showMsg("Invalid Username or Password.", "Login Failed");
