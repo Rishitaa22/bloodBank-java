@@ -32,6 +32,7 @@ public class MainDashboard extends JFrame {
         searchDonors();
     }
 
+    // --- UPDATED TOP PANEL (Admin button removed) ---
     private JPanel makeTopPanel() {
         JPanel top = new JPanel(new BorderLayout());
 
@@ -51,11 +52,7 @@ public class MainDashboard extends JFrame {
         JPanel actions = new JPanel();
         actions.add(makeButton("My Profile", new Color(0,128,0), e -> new ProfileUpdateForm(username).setVisible(true)));
         actions.add(makeButton("Requests", new Color(0,100,255), e -> new RequestsForm(username).setVisible(true)));
-        
-        // --- THIS IS THE UPDATED LINE ---
-        actions.add(makeButton("Admin", Color.RED, e -> new AdminLoginForm().setVisible(true)));
-        // --- END OF UPDATE ---
-        
+        // Admin button removed
         actions.add(makeButton("Logout", new Color(100,100,100), e -> logout()));
 
         top.add(searchPanel, BorderLayout.WEST);
@@ -67,6 +64,7 @@ public class MainDashboard extends JFrame {
         String[] cols = {"Username", "Blood Group", "City", "Contact", "Availability", "Request"};
         model = new DefaultTableModel(cols, 0) {
             public boolean isCellEditable(int r, int c) {
+                // Only allow editing the "Request" button column
                 return c == 5 && "Available".equals(getValueAt(r, 4));
             }
         };
@@ -122,6 +120,7 @@ public class MainDashboard extends JFrame {
         BtnRenderer() { setOpaque(true); }
         public Component getTableCellRendererComponent(JTable t, Object v, boolean s, boolean f, int r, int c) {
             setText(v == null ? "" : v.toString());
+            // Disable button if user is "Not Available"
             setEnabled("Available".equals(t.getValueAt(r, 4)));
             return this;
         }
